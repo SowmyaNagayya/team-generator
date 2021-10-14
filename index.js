@@ -2,101 +2,88 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 
-//Importing question arrays to use with inquirer
-const engineerquestions = require('./src/engineerquestions.js');
-const internquestions = require('./src/internquestions.js');
-const managerquestions = require('./src/managerquestions.js');
+// //Importing question arrays to use with inquirer
+// const engineerquestions = require('./src/engineerquestions.js');
+// const internquestions = require('./src/internquestions.js');
+// const managerquestions = require('./src/managerquestions.js');
+const teammemberquestions = [
+    {
+        type: "input",
+        message: "Please Enter The Engineer's Name",
+        name: "engineerName"
+    },
+    {
+        type: "input",
+        message: "Please Enter The Engineer's Employee ID.",
+        name: "engineerId"
+    },
+    {
+        type: "input",
+        message: "Please Enter The Engineer's Email.",
+        name: "engineerEmail"
+    },
+    {
+        type: "input",
+        message: "Please Enter The Engineer's GitHub Username.",
+        name: "engineergitHub" 
+    },
+    {
+        type: "choices",
+        message: "Would You Like To Add a Team Member?",
+        choices: ["Employee", "Intern", "Manager"]
+    },
+    {
+        type: "input",
+        message: "Please Enter The Intern's Name",
+        name: "internName"
+    },
+    {
+        type: "input",
+        message: "Please Enter The Intern's Employee ID.",
+        name: "internId"
+    },
+    {
+        type: "input",
+        message: "Please Enter The Intern's Email.",
+        name: "internEmail"
+    },
+    {
+        type: "input",
+        message: "Please Enter The Intern's School.",
+        name: "internSchool" 
+    },
+    {
+        type: "choices",
+        message: "Would You Like To Add a Team Member?",
+        choices: ["Employee", "Intern", "Manager"]
+    },
+    {
+        type: "input",
+        message: "Please Enter The Manager's Name",
+        name: "managerName"
+    },
+    {
+        type: "input",
+        message: "Please Enter The Manager's Employee ID.",
+        name: "managerId"
+    },
+    {
+        type: "input",
+        message: "Please Enter The Manager's Email.",
+        name: "managerEmail"
+    },
+    {
+        type: "input",
+        message: "Please Enter The Office Number Of The Manager.",
+        name: "managerOfficeNumber" 
+    },
+    {
+        type: "choices",
+        message: "Would You Like To Add a Team Member?",
+        choices: ["Employee", "Intern", "Manager"]
+    }
+]
 
-//Importing classes of team members
-const Engineer = require('./lib/Employee.js');
-const Intern = require('./lib/Intern.js');
-const Manager = require('./lib/Manager.js');
-const generateMarkdown = require("../readme_generator/utils/generateMarkdown.js");
-
-//geretare team members in html for specific team member
-const generateTeamMemberHTML = ({Engineer,Intern,Manager}) =>
-`<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-
-    <!-- Materialize CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
-    <!-- Materialize JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        
-    <!-- Material Icon Library -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="./style.css">
-    <title>My Team</title>
-
-</head>
-<body>
-  <!-- Navigation bar for My Team -->
-  <nav>
-    <div class="nav-wrapper">
-      <a class="brand-logo center">My Team</a>
-    </div>
-  </nav>
-
-  <main class="container">
-  <div class="row">
-
-            
-
-  
-
-  <div class="col s12 m6 l4">
-    <div class="card blue darken-1">
-        <div class="card-content white-text">
-          <h6>Engineer</h6>
-            <ul class="collection black-text">
-                <li class="collection-item">Name: ${data.engineerName} </li>
-                <li class="collection-item">Team ID: ${data.engineerId} </li>
-                <li class="collection-item">Email: <a href="mailto: ${data.engineerEmail}"></a></li>
-                <li class="collection-item">GitHub: <a href="${data.engineergitHub}  "></a></li>
-            </ul>
-        </div>
-    </div>
-  </div>
-
-  <div class="col s12 m6 l4">
-    <div class="card blue darken-1">
-        <div class="card-content white-text"> 
-          <h6>Intern</h6>
-            <ul class="collection black-text">
-                <li class="collection-item">Name:${data.internName} </li>
-                <li class="collection-item">Team ID:${data.internId} </li>
-                <li class="collection-item">Email: <a href="mailto: ${data.internEmail}"></a></li>
-                <li class="collection-item">School:${data.internSchool} </li>
-            </ul>
-        </div>
-    </div>
-  </div>
-
-  <div class="col s12 m6 l4">
-    <div class="card blue darken-1">
-        <div class="card-content white-text">
-          <h6>Manager</h6>
-            <ul class="collection black-text">
-                <li class="collection-item">Name:${data.managerName} </li>
-                <li class="collection-item">Team ID:${data.managerId} </li>
-                <li class="collection-item">Email: <a href="mailto: ${data.managerEmail}"></a></li>
-                <li class="collection-item">Office Number: ${data.managerOfficeNumber}</li>
-            </ul>
-        </div>
-    </div>
-  </div>
-  </div>
-  </main>
-
-</body>
-</html>`
 
 // Writes the generated html to a new file: ./dist/index.html
 function writeToHTML(fileName,data) {
@@ -109,28 +96,27 @@ function writeToHTML(fileName,data) {
 function init() {
 
     inquirer
-      .prompt(engineerquestions)
-
+      .prompt(teammemberquestions)
         .then(response => {
             const generateHtml= generateTeamMemberHTML(response);
           writeToFile("./dist/index.html", generateHtml);
         })
     
-    inquirer
-      .prompt(internquestions)
+    // inquirer
+    //   .prompt(internquestions)
 
-        .then(response => {
-            const generateHtml= generateTeamMemberHTML(response);
-          writeToFile("./dist/index.html", generateHtml);
-        })
+    //     .then(response => {
+    //         const generateHtml= generateTeamMemberHTML(response);
+    //       writeToFile("./dist/index.html", generateHtml);
+    //     })
 
-    inquirer
-      .prompt(managerquestions)
+    // inquirer
+    //   .prompt(managerquestions)
 
-        .then(response => {
-            const generateHtml= generateTeamMemberHTML(response);
-          writeToFile("./dist/index.html", generateHtml);
-        })
+    //     .then(response => {
+    //         const generateHtml= generateTeamMemberHTML(response);
+    //       writeToFile("./dist/index.html", generateHtml);
+    //     })
         
     }
 // Start her up!
