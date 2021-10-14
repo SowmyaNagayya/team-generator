@@ -20,9 +20,9 @@ const internquestions = [
         name: "internSchool" 
     },
     {
-        type: "confirm",
+        type: "choices",
         message: "Would You Like To Add a Team Member?",
-        name: "addTeamMember"
+        choices: ["Employee", "Intern", "Manager"]
     }
 ]
 

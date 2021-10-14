@@ -11,6 +11,7 @@ const managerquestions = require('./src/managerquestions.js');
 const Engineer = require('./lib/Employee.js');
 const Intern = require('./lib/Intern.js');
 const Manager = require('./lib/Manager.js');
+const generateMarkdown = require("../readme_generator/utils/generateMarkdown.js");
 
 //geretare team members in html for specific team member
 const generateTeamMemberHTML = ({Engineer,Intern,Manager}) =>
@@ -48,27 +49,17 @@ const generateTeamMemberHTML = ({Engineer,Intern,Manager}) =>
 
             
 
-  <div class="col s12 m6 l4">
-    <div class="card blue darken-1">
-        <div class="card-content white-text">
-          <h6>Manager</h6>
-            <ul class="collection black-text">
-                <li class="collection-item">Team ID: </li>
-                <li class="collection-item">Email: <a href="mailto: manager@gmail.com"></a></li>
-                <li class="collection-item">Office Number:</li>
-            </ul>
-        </div>
-    </div>
-  </div>
+  
 
   <div class="col s12 m6 l4">
     <div class="card blue darken-1">
         <div class="card-content white-text">
           <h6>Engineer</h6>
             <ul class="collection black-text">
-                <li class="collection-item">Team ID: </li>
-                <li class="collection-item">Email: <a href="mailto: sowmya@gmail.com"></a></li>
-                <li class="collection-item">GitHub: <a href="https://github.com/SowmyaNagayya  "></a></li>
+                <li class="collection-item">Name: ${data.engineerName} </li>
+                <li class="collection-item">Team ID: ${data.engineerId} </li>
+                <li class="collection-item">Email: <a href="mailto: ${data.engineerEmail}"></a></li>
+                <li class="collection-item">GitHub: <a href="${data.engineergitHub}  "></a></li>
             </ul>
         </div>
     </div>
@@ -79,9 +70,24 @@ const generateTeamMemberHTML = ({Engineer,Intern,Manager}) =>
         <div class="card-content white-text"> 
           <h6>Intern</h6>
             <ul class="collection black-text">
-                <li class="collection-item">Team ID: </li>
-                <li class="collection-item">Email: <a href="mailto: abc@email.com"></a></li>
-                <li class="collection-item">School: </li>
+                <li class="collection-item">Name:${data.internName} </li>
+                <li class="collection-item">Team ID:${data.internId} </li>
+                <li class="collection-item">Email: <a href="mailto: ${data.internEmail}"></a></li>
+                <li class="collection-item">School:${data.internSchool} </li>
+            </ul>
+        </div>
+    </div>
+  </div>
+
+  <div class="col s12 m6 l4">
+    <div class="card blue darken-1">
+        <div class="card-content white-text">
+          <h6>Manager</h6>
+            <ul class="collection black-text">
+                <li class="collection-item">Name:${data.managerName} </li>
+                <li class="collection-item">Team ID:${data.managerId} </li>
+                <li class="collection-item">Email: <a href="mailto: ${data.managerEmail}"></a></li>
+                <li class="collection-item">Office Number: ${data.managerOfficeNumber}</li>
             </ul>
         </div>
     </div>
@@ -92,10 +98,41 @@ const generateTeamMemberHTML = ({Engineer,Intern,Manager}) =>
 </body>
 </html>`
 
-.then((answers) => {
-    const htmlPageContent = generateTeamMemberHTML(answers);
+// Writes the generated html to a new file: ./dist/index.html
+function writeToHTML(fileName,data) {
+    fs.writeFile("./dist/index.html", data, (err) => {
+        err ? log.error(err) : console.log("Success");
+    });
+}
 
-    fs.writeFile('index.html', htmlPageContent, (err) =>
-      err ? console.log(err) : console.log('Successfully created index.html!')
-    );
-  });
+// Function to initialze the application and use inquirer to gather data.
+function init() {
+
+    inquirer
+      .prompt(engineerquestions)
+
+        .then(response => {
+            const generateHtml= generateTeamMemberHTML(response);
+          writeToFile("./dist/index.html", generateHtml);
+        })
+    
+    inquirer
+      .prompt(internquestions)
+
+        .then(response => {
+            const generateHtml= generateTeamMemberHTML(response);
+          writeToFile("./dist/index.html", generateHtml);
+        })
+
+    inquirer
+      .prompt(managerquestions)
+
+        .then(response => {
+            const generateHtml= generateTeamMemberHTML(response);
+          writeToFile("./dist/index.html", generateHtml);
+        })
+        
+    }
+// Start her up!
+init();
+  
