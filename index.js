@@ -34,7 +34,7 @@ const managerQuestions = [
         type: "list",
         message: "Would You Like To Add a Team Member?",
         name: "role",
-        choices: ["Engineer", "Intern", "Manager"]
+        choices: ["Engineer", "Intern", "Manager", "I don't want to Add more Employees"]
     }
 ]
 
@@ -64,7 +64,7 @@ const engineerQuestions = [
         type: "list",
         message: "Would You Like To Add a Team Member?",
         name: "role",
-        choices: ["Engineer", "Intern", "Manager"]
+        choices: ["Engineer", "Intern", "Manager", "I don't want to Add more Employees"]
     }
 ]
 
@@ -94,19 +94,10 @@ const internQuestions = [
         type: "list",
         message: "Would You Like To Add a Team Member?",
         name: "role",
-        choices: ["Engineer", "Intern", "Manager"]
+        choices: ["Engineer", "Intern", "Manager", "I don't want to Add more Employees"]
     }
     
 ]
-
-
-// //  Writes the generated html to a new file: ./dist/index.html
-// function writeToHTML(fileName,data) {
-//     fs.writeFile("./dist/index.html", data, (err) => {
-//         err ? log.error(err) : console.log("Success");
-//     });
-// }
-
 
 function writeHTML() {
 
@@ -207,13 +198,12 @@ function askManagerQuestions() {
     inquirer
       .prompt(managerQuestions)
         .then(response => {
-            //const manager = new manager(response);
             if(response.role === "Engineer") {
                 askEngineerQuestions();
             } else if(response.role === "Intern") {
                 askInternQuestions();
             } else return;
-            writeHTML(response);
+            //writeHTML(response);
         })
     }
     
@@ -221,13 +211,12 @@ function askManagerQuestions() {
         inquirer
           .prompt(engineerQuestions)
             .then(response => {
-                //const engineer = new engineer(response);
                 if(response.role === "Manager") {
                     askManagerQuestions();
                 } else if(response.role === "Intern") {
                     askInternQuestions();
                 } else return;
-                writeHTML(response);
+                //writeHTML(response);
             })
         }
 
@@ -235,28 +224,16 @@ function askManagerQuestions() {
             inquirer
               .prompt(internQuestions)
                 .then(response => {
-                    //const intern = new intern(response);
                     if(response.role === "Manager") {
                         askManagerQuestions();
                     } else if(response.role === "Engineer") {
                         askEngineerQuestions();
                     } else return;
-                   writeHTML(response);
+                   //writeHTML(response);
                 })
             }
     
-// function startApp() {
-//     inquirer
-//         .prompt(questions)
-//         .then ((responses) => {
-//             // Sends the responses to the generate HTML function and sets the return to finalHTML
-//             const finalHTML = generateHTML(responses);
-           
-//             // Calls the function to write the final file using the template string
-//             writeToHTML(finalHTML);
-//         })
 
-// }
     
 // Start up!
 askManagerQuestions();
