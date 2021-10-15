@@ -1,8 +1,10 @@
 const Employee = require('../lib/Employee');
 
 describe("Employee class",()=> {
+    //act
     let employees = new Employee("sowmya",1111,"kkd.sowmya@gmail.com");
     it("creates Employee object", () => {
+        //assert
         expect(employees.Employee).toBe(true);
     });
 

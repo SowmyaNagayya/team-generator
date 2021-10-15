@@ -2,8 +2,10 @@ const Employee = require('../lib/Employee');
 const Engineer = require('../lib/Manager.js');
 
 describe("Manager class",()=> {
+    //act
     let employees = new Manager("Narayan",4444,"narayan@gmail.com",65456462);
     it("creates Engineer object", () => {
+        //assert
         expect(employees.Employee).toBe(true);
         expect(employees.Manager).toBe(true);
     });
