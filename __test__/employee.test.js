@@ -5,7 +5,7 @@ describe("Employee class",()=> {
     let employees = new Employee("sowmya",1111,"kkd.sowmya@gmail.com");
     it("creates Employee object", () => {
         //assert
-        expect(employees.Employee).toBe(true);
+        expect(employees).toEqual(expect.any(Object));  //returning object
     });
 
     it("Employee has correct Name",()=> {
@@ -13,7 +13,7 @@ describe("Employee class",()=> {
     });
 
     it("Employee has correct id",()=> {
-        expect(employees.getId()).toBe("1111");
+        expect(employees.getId()).toBe(1111);
     });
 
     it("Employee has correct email",()=> {

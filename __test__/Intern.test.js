@@ -1,32 +1,31 @@
 const Employee = require('../lib/Employee');
-const Engineer = require('../lib/Intern.js');
+const Intern = require('../lib/Intern.js');
 
 describe("Intern class",()=> {
     //act
-    let employees = new Intern("Ram",3333,"ram@gmail.com","University of Minnesota");
-    it("creates Engineer object", () => {
+    let intern = new Intern("Ram",3333,"ram@gmail.com","University of Minnesota");
+    it("creates intern object", () => {
         //assert
-        expect(employees.Employee).toBe(true);
-        expect(employees.Intern).toBe(true);
+        expect(intern).toEqual(expect.any(Object));
     });
 
     it("Intern has correct Name",()=> {
-        expect(employees.getName()).toBe("Ram");
+        expect(intern.getName()).toBe("Ram");
     });
 
     it("Intern has correct id",()=> {
-        expect(employees.getId()).toBe("3333");
+        expect(intern.getId()).toBe(3333);
     });
 
     it("Intern has correct email",()=> {
-        expect(employees.getEmail()).toBe("ram@gmail.com");
+        expect(intern.getEmail()).toBe("ram@gmail.com");
     });
 
     it("Intern has correct school Name",()=> {
-        expect(employees.getSchool()).toBe("University of Minnesota");
+        expect(intern.getSchool()).toBe("University of Minnesota");
     });
 
     it("Intern has correct role",()=> {
-        expect(employees.getRole()).toBe("Intern");
+        expect(intern.getRole()).toBe("Intern");
     });
 });

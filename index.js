@@ -7,7 +7,7 @@ const Employee = require('./lib/Employee.js');
 const Manager = require('./lib/Manager.js');
 const Engineer = require('./lib/Engineer.js');
 const Intern = require('./lib/Intern.js');
-
+const employeeArray = [];
 //Manager Questions
 const managerQuestions = [
     {
@@ -99,18 +99,9 @@ const internQuestions = [
     
 ]
 
-function writeHTML() {
-
-    // Get generated html from helper function using the user input data from inquirer
-    let html = generateHTML(response);
-
-    // Write the file to distribution folder ./dist/index.html and log a success/failure
-    fs.writeFile("./dist/index.html", html, (error) => {
-        (error) ? log.error(error) : console.log("Success");
-    });
-}
-
-const generateHTML = ({Engineer,Intern,Manager}) =>
+//Function for generate templete literal for manager in Html page
+function generateManagerHTML(manager) {
+   let managerHtml = 
 `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -145,7 +136,7 @@ const generateHTML = ({Engineer,Intern,Manager}) =>
 
             
   <div class="col s12 m6 l4">
-  <div class="card blue darken-1">
+   <div class="card blue darken-1">
       <div class="card-content white-text">
         <h6>Manager</h6>
           <ul class="collection black-text">
@@ -155,11 +146,16 @@ const generateHTML = ({Engineer,Intern,Manager}) =>
               <li class="collection-item">Office Number: ${response.managerOfficeNumber}</li>
           </ul>
       </div>
+   </div>
   </div>
-</div>
-  
+}
+  `
+}
 
-  <div class="col s12 m6 l4">
+//Function for generate templete literal for engineer in Html page
+function generateEngineerHTML(engineer){
+    let engineerHtml = 
+  `<div class="col s12 m6 l4">
     <div class="card blue darken-1">
         <div class="card-content white-text">
           <h6>Engineer</h6>
@@ -172,8 +168,13 @@ const generateHTML = ({Engineer,Intern,Manager}) =>
         </div>
     </div>
   </div>
+`
+}
 
-  <div class="col s12 m6 l4">
+//Function for generate templete literal for intern in Html page
+function generateInternHTML(intern){
+    let internHtml = 
+  `<div class="col s12 m6 l4">
     <div class="card blue darken-1">
         <div class="card-content white-text"> 
           <h6>Intern</h6>
@@ -193,51 +194,80 @@ const generateHTML = ({Engineer,Intern,Manager}) =>
 
 </body>
 </html>`
+}
+
 // Function to initialze the application and use inquirer to gather data.
+//Function for asking Manager Questions
 function askManagerQuestions() {
     inquirer
       .prompt(managerQuestions)
         .then(response => {
+              const manager = new Manager(response.managerName,response.managerId,response.managerEmail,response.managerOfficeNumber);
+
+              employeeArray.push(manager);
+            //generateManagerHTML(manager);
             if(response.role === "Engineer") {
                 askEngineerQuestions();
             } else if(response.role === "Intern") {
                 askInternQuestions();
             } else return;
             //writeHTML(response);
+            console.log(employeeArray)
         })
     }
-    
-    function askEngineerQuestions() {
-        inquirer
-          .prompt(engineerQuestions)
-            .then(response => {
-                if(response.role === "Manager") {
-                    askManagerQuestions();
-                } else if(response.role === "Intern") {
-                    askInternQuestions();
-                } else return;
-                //writeHTML(response);
+
+ //Function for asking Engineer Questions   
+function askEngineerQuestions() {
+    inquirer
+      .prompt(engineerQuestions)
+        .then(response => {
+            const engineer = new Engineer(response.engineerName,response.engineerId,response.engineerEmail,response.engineergitHub);
+
+              employeeArray.push(engineer);
+            //generateEngineerHTML(engineer);
+            if(response.role === "Manager") {
+                askManagerQuestions();
+            } else if(response.role === "Intern") {
+                 askInternQuestions();
+            } else return;
+            //writeHTML(response);
+            console.log(employeeArray)
             })
         }
 
-        function askInternQuestions() {
-            inquirer
-              .prompt(internQuestions)
-                .then(response => {
-                    if(response.role === "Manager") {
-                        askManagerQuestions();
-                    } else if(response.role === "Engineer") {
-                        askEngineerQuestions();
-                    } else return;
+//Function for asking Intern Questions
+function askInternQuestions() {
+    inquirer
+      .prompt(internQuestions)
+        .then(response => {
+            const intern = new Intern(response.internName,response.internId,response.engineerEmail,response.internSchool);
+
+              employeeArray.push(intern);
+           // generateInternHTML(intern);
+            if(response.role === "Manager") {
+                askManagerQuestions();
+            } else if(response.role === "Engineer") {
+                 askEngineerQuestions();
+            } else return;
                    //writeHTML(response);
+                   console.log(employeeArray)
                 })
             }
     
+//Funtion to response HTML            
+function writeHTML() {
 
+    managerQuestions();
+            
+        // Get generated html from helper function using the user input data from inquirer
+        let html = generateHTML(response);
+            
+        // Write the file to distribution folder ./dist/index.html and log a success/failure
+        fs.writeFile("./dist/index.html", html, (error) => {
+            (error) ? log.error(error) : console.log("Success");
+              });
+          }
+            
     
 // Start up!
 askManagerQuestions();
-
-
-
-  
