@@ -99,6 +99,7 @@ const internQuestions = [
     }
 
 ]
+
 function generateHTML(cards) {
     return `
     <!DOCTYPE html>
@@ -208,29 +209,6 @@ function generateInternHTML(intern) {
 `
     return internHtml;
 }
-
-// Function to initialze the application and use inquirer to gather data.
-//Function for asking Manager Questions
-// function askManagerQuestions() {
-//     inquirer
-//       .prompt(managerQuestions)
-//         .then(response => {
-//               const manager = new Manager(response.managerName,response.managerId,response.managerEmail,response.managerOfficeNumber);
-
-//               managerArray.push(manager);
-
-//               console.debug("Reading the manager Obj "+response.managerName);
-//              generateManagerHTML(managerArray);
-
-//             // if(response.role === "Engineer") {
-//             //     askEngineerQuestions();
-//             // } else if(response.role === "Intern") {
-//             //     askInternQuestions();
-//             // } else return;
-//             // writeHTML(response);
-//             console.log(employeeArray)
-//         })
-//     }
 
 let team = [];
 
