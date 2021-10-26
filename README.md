@@ -12,6 +12,10 @@ Then answer the questions with the information you would like included in your H
 
 After entering all of your information, the program will create a index.htim file in your folder.
 
+## Screenshot of Team Generator
+
+![Here is a screen shot of the final page.](./assets/images/teamgeneratorimage.png)
+
 
 ## Link to Demo
 
